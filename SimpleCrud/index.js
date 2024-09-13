@@ -7,11 +7,11 @@ import route from "./routes/userRoute.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
-app.use(express.json()); // Replaces bodyParser.json()
+app.use(express.json()); 
 app.use(cors());
 
 // Routes

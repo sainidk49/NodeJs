@@ -3,10 +3,10 @@ import User from "../model/userModel.js"
 ////////// create user ////////////////
 export const create = async (req, res) => {
     try {
-        const userData = new User(req.body);
         if (!req.body || Object.keys(req.body).length === 0) {
             return res.status(400).json({ message: "User data not provided." });
         }
+        const userData = new User(req.body);
         const savedData = await userData.save();
         console.log(savedData);
         res.status(201).json(savedData);
