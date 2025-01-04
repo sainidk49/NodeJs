@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors())
 
+
 app.get("/", (req, res) => {
     res.send("Welcome to our domain");
 })
@@ -23,7 +24,7 @@ app.get("/api/users", (req, res) => {
 
 //// create user //////
 app.post("/api/create", (req, res) => {
-    console.log(req.body)
+    console.log(req.headers.origin)
     if (!req.body || Object.keys(req.body).length === 0) {
         return res.status(400).send({ message: "Please provide all user data" });
     }

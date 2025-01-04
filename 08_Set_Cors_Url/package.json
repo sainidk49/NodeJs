@@ -1,5 +1,5 @@
 {
-  "name": "07_crudwithstatic",
+  "name": "08_set_cors_url",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

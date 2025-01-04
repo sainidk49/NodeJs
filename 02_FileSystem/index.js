@@ -1,16 +1,16 @@
 const fs = require("fs");
 
-///// create file Sync.....
-// fs.writeFileSync("./text.txt", "Hello, World!");
+/// create file Sync.....
+fs.writeFileSync("./text.txt", "Hello, World!");
 
-///// create file Aysc.....
-// fs.writeFile("./text1.txt", "Hello, Duniya!", (err) => {
-//     if (err) {
-//         console.error("Error writing file:", err);
-//     } else {
-//         console.log("File written successfully!");
-//     }
-// });
+/// create file Aysc.....
+fs.writeFile("./text1.txt", "Hello, Duniya!", (err) => {
+    if (err) {
+        console.error("Error writing file:", err);
+    } else {
+        console.log("File written successfully!");
+    }
+});
 
 
 ///// read file Sync.....call as blocking => read threads
