@@ -7,16 +7,14 @@ export const create = async (req, res) => {
             return res.status(400).json({ status: false, message: "User data not provided!" });
         }
 
-        if (req.body) {
-            let bodyObj = req.body
-            for (const key in bodyObj) {
-                const element = bodyObj[key];
-                if(!element){
-                   return res.status(404).json({ status: false, message: `Please enter the ${key}` });
-                }
+        let bodyObj = req.body
+        for (const key in bodyObj) {
+            const element = bodyObj[key];
+            if (!element) {
+                return res.status(404).json({ status: false, message: `Please enter the ${key}` });
             }
         }
-
+        
         const userData = new User(req.body);
         const savedData = await userData.save();
         console.log(savedData);
