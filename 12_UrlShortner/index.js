@@ -19,4 +19,4 @@ app.get("/", (req, res) => {
     res.send("Welcome to home")
 })
 
-app.use("/url", urlRoute)
+app.use("/api/url", urlRoute)

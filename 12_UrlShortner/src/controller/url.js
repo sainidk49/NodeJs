@@ -22,7 +22,7 @@ const shortUrl = async (req, res) => {
     }
 
     const checkUrl = await urlSchema.findOne({ url: req.body.url });
-    if(checkUrl){
+    if (checkUrl) {
         return res.status(201).json({ message: "Exsit url!", url: `http://localhost:3000/url/${checkUrl.shortUrl}` })
     }
 
@@ -53,4 +53,22 @@ const getRedirectUrl = async (req, res) => {
     res.redirect(entry.url)
 }
 
-module.exports = { shortUrl, getRedirectUrl }
+const getVisitHistory = async (req, res) => {
+    const shortID = req.params.shortID
+    if (!shortID) {
+        return res.status(404).json({ message: "Please enter a shortID" })
+    }
+
+    const urlData = await urlSchema.findOne({ shortUrl: shortID })
+    if (!urlData) {
+        return res.status(404).json({ message: "URL not found" })
+    }
+
+    const { url, count, visitHistory } = urlData
+
+    return res.status(200).json({ message: "Successfull!", analytics: { url, count, visitHistory } })
+
+}
+
+
+module.exports = { shortUrl, getRedirectUrl, getVisitHistory }
