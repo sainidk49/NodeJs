@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Genrate short url</h1>
+
+  <form action="/api/create-url" method="POST">
+    <div class="form-group">
+      <input type="text" name="url">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+  <div>
+    <% if(!locals.status) { %>
+    <h1>
+      <%= locals.message %>
+    </h1>
+    <% } else { %>
+    <h1>
+      <%= locals.message %> :-  <%= locals.url %>
+    </h1>
+    <% } %>
+  </div>
+</body>
+
+</html>
