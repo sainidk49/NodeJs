@@ -1,4 +1,4 @@
-const UrlSchema = require('../model/url-model');
+const UrlSchema = require('../models/url-model');
 const validUrl = require('valid-url');
 
 const createUniqueId = (length) => {
@@ -9,6 +9,19 @@ const createUniqueId = (length) => {
     }
     return result;
 }
+
+const makeShortUrl =()=>{
+    const domainName = window.location.hostname;
+    let domain
+    if(domainName === "localhost" || domainName === "127.0.0.1"){
+      domain = "http://" + domainName;
+    }
+    else{
+      domain = "https://" + domainName;
+    }
+    
+    return domain + "/short/" + createUniqueId(6);
+} 
 
 const createUrl = async (req, res) => {
     try {
@@ -25,11 +38,10 @@ const createUrl = async (req, res) => {
             return res.render("home", { status: true, message: "From exixt url", url: `http://localhost:5500/api/${existingUrl.shortUrl}` });
         }
 
-        const shortID = createUniqueId(8);
-
         await UrlSchema.create({
             url: req.body.url,
-            shortUrl: shortID
+            shortUrl: makeShortUrl(),
+            createdBy: req.user._id
         })
 
         return res.render("home", { status: true, message: "New url", url: `http://localhost:5500/api/${shortID}` });
@@ -45,7 +57,7 @@ const getShortUrl = async (req, res) => {
         if (!shortID) {
             return res.status(400).json({ status: false, message: "Invalid ID1" });
         }
-        console.log(shortID)
+     
         const checkUrl = await UrlSchema.findOne({ shortUrl: shortID });
         if (!checkUrl) {
             return res.status(400).json({ status: false, message: "Invalid ID2" });
@@ -56,7 +68,6 @@ const getShortUrl = async (req, res) => {
             $push: { visitHistory: { "time": Date.now().toLocaleString } }
         }, { new: true })
 
-        console.log(entry.url)
 
         return res.redirect(entry.url);
 

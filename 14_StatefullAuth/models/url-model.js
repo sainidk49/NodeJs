@@ -17,8 +17,12 @@ const schema =  new mongoose.Schema({
     visitHistory:{
         type: Array,
         default: [],
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
     }
 })
 
-const urlSchema = mongoose.model("Url", schema, "urlshortner");
+const urlSchema = mongoose.model("Url", schema, "urls");
 module.exports = urlSchema;

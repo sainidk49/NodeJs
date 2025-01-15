@@ -20,5 +20,5 @@ const schema =  new mongoose.Schema({
     }
 })
 
-const urlSchema = mongoose.model("Url", schema, "urlshortner");
+const urlSchema = mongoose.model("Url", schema, "urls");
 module.exports = urlSchema;
