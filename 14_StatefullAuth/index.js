@@ -45,5 +45,5 @@ app.get("/", (req, res) => {
 })
 
 app.use("/", webRouter)
-app.use("/api/url", urlRouter)
+app.use("/url", urlRouter)
 app.use("/api/user", userRouter)

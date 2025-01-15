@@ -5,6 +5,11 @@ const schema =  new mongoose.Schema({
         type: String,
         required: true
     },
+    shortID:{
+        type: String,
+        require: true,
+        unique: true
+    },
     shortUrl:{
         type: String,
         require: true,
