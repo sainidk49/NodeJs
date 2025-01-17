@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Short URL</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    div {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    table {
+      width: 60%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      margin: 0px auto;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ccc;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+      height: 14px;
+    }
+
+    .d-none{
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Generate Short URL</h1>
+
+  <form id="urlForm">
+    <div class="form-group">
+      <input type="text" name="url" placeholder="Enter your URL here">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+  <div id="message" class="message"></div>
+
+  <div>
+    <table id="table" class="d-none">
+      <thead>
+        <tr>
+          <th>Sr. No.</th>
+          <th>Main Url</th>
+          <th>Short URL</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let htmlData = ""
+
+    
+    document.getElementById("urlForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      let form = new FormData(this);
+      let formData = {};
+      for (let [key, value] of form.entries()) {
+        formData[key] = value;
+      }
+
+      const response = await fetch('/api/url/create', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(res => res.json());
+
+      if (response.status === false) {
+        document.getElementById("message").textContent = response.message
+        if (response.page) {
+          setTimeout(() => {
+            window.location.href = response.page
+          }, 2000);
+        }
+      } else {
+        document.getElementById("message").textContent = "";
+        allUrls()
+      }
+    })
+
+
+    async function allUrls() {
+      htmlData = ""
+      const response = await fetch('/api/url/all', {
+        method: 'POST',
+      }).then(res => res.json());
+      if (response.status) {
+        document.getElementById("message").textContent = ""
+        response.urls?.forEach((element, index) => {
+          htmlData += `<tr>
+                        <td>${index+1}</td>
+                        <td>${element.url}</td>
+                        <td>${element.shortUrl}</td>
+                        <td>${element.count}</td>
+                      <tr>`
+        });
+        if(response.urls && response.urls.length > 0) {
+          document.getElementById("table").classList.remove("d-none")
+        }
+        document.getElementById("tbody").innerHTML = htmlData
+      }
+    }
+    allUrls()
+  </script>
+</body>
+
+</html>
