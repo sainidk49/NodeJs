@@ -17,7 +17,7 @@ const checkUserUrls = async (req, res, next) => {
     const userSessionId = req.cookies?.token
 
     const user = await getUserSesion(userSessionId);
-
+    
     req.user = user || null
 
     next()

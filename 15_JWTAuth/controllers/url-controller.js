@@ -31,7 +31,7 @@ const createUrl = async (req, res) => {
             return res.status(401).json({ status: false, message: "Invalid URL" });
         }
 
-        const existingUrl = await UrlSchema.findOne({ url: req.body.url });
+        const existingUrl = await UrlSchema.findOne({ createdBy: req.user._id, url: req.body.url });
         if (existingUrl) {
             return res.status(201).json({ status: true, message: "Existing URL"});
         }
@@ -80,7 +80,11 @@ const getShortUrl = async (req, res) => {
 
 const getAllData = async (req, res) => {
     try {
-        const allUrls = await UrlSchema.find({}).sort({ createdAt: -1 });
+        const user = req.user
+        if(!user){
+            return res.status(401).json({ status: false, message: "Unauthorized" });
+        }
+        const allUrls = await UrlSchema.find({createdBy: user._id}).sort({ createdAt: -1 });
         return res.status(201).json({ status: true, message: "successfully", urls: allUrls});
     }
     catch(err){
