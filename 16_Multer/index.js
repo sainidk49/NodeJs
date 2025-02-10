@@ -35,4 +35,4 @@ dbConnect(MONGO_URL)
     });
 
 
-app.use("/file", imageRouter)
+app.use(imageRouter)

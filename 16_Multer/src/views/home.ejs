@@ -50,23 +50,38 @@
 </head>
 
 <body>
-  <form action="/file/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" id="image" name="image" accept="image/*" />
+  <form id="uploadForm">
+    <input type="file" name="image" accept="image/*" />
     <input type="submit" value="Upload">
   </form>
+  <p id="message"></p>
+  <img width="400" src="" id="image" alt="">
 
-  <img src="/uploads/173737706461401 - Copy.jpg" alt="">
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+      event.preventDefault(); 
 
-  <div>
-    <% if (locals.message) { %>
-    <p><%= locals.message %></p>
-    <% if (locals.url) { %>
-      <img src="/<%= locals.url %>" alt="">
-    <% } %>
-    <% } %>
-</div>
+      let form = new FormData(this);
 
- 
+      // Send the FormData directly to the server
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: form 
+      });
+
+      const result = await response.json(); 
+
+      if (result.status === false) {
+        document.getElementById("message").textContent = result.message;
+      } else {
+        document.getElementById("message").textContent = result.message;
+        document.getElementById("image").src = result.url;
+      }
+
+      document.getElementById("uploadForm").reset();
+    });
+  </script>
+
 </body>
 
 </html>

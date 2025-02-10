@@ -7,6 +7,6 @@ route.get("/", (req, res) => {
     res.render("home");
 })
 
-route.post("/upload", uploadFile)
+route.post("/api/upload", uploadFile)
 
 module.exports = route
