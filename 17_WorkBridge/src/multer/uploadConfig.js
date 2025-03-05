@@ -33,6 +33,7 @@ const upload = multer({
     }
 });
 
+
 // Function to delete old images
 export const deleteOldImage = (filename) => {
     try {
