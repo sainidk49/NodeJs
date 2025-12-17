@@ -10,6 +10,7 @@ const createUniqueId = (length) => {
     return result;
 };
 
+
 const makeShortUrl = (req, shortID) => {
     const domainName = req.headers.host;
     let domain;
@@ -20,6 +21,7 @@ const makeShortUrl = (req, shortID) => {
     }
     return domain + "/api/url/" + shortID;
 };
+
 
 const createUrl = async (req, res) => {
     try {
@@ -53,6 +55,7 @@ const createUrl = async (req, res) => {
     }
 };
 
+
 const getShortUrl = async (req, res) => {
     try {
         const shortID = req.params.shortID;
@@ -81,6 +84,7 @@ const getShortUrl = async (req, res) => {
 const getAllData = async (req, res) => {
     try {
         const user = req.user
+        console.log(user)
         if(!user){
             return res.status(401).json({ status: false, message: "Unauthorized" });
         }
@@ -90,6 +94,6 @@ const getAllData = async (req, res) => {
     catch(err){
         return res.status(400).json({ status: false, message: `Error :: ${err}`})
     }
-}
+};
 
 module.exports = { createUrl, getShortUrl, getAllData };
